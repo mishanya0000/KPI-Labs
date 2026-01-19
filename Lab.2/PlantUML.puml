@@ -1,0 +1,57 @@
+@startuml
+title Use Case Diagram — Trading System
+
+actor "Customer" as C
+actor "Employee" as E
+
+rectangle "Trading System" {
+    
+    ' --- Customer management ---
+    usecase "UC1: Register new customer" as UC1
+    usecase "UC2: View customer list" as UC2
+
+    ' --- Employee management ---
+    usecase "UC3: Add employee" as UC3
+    usecase "UC4: View employee list" as UC4
+
+    ' --- Product and category management ---
+    usecase "UC5: Add product category" as UC5
+    usecase "UC6: Add product" as UC6
+    usecase "UC7: View product catalog" as UC7
+
+    ' --- Order management ---
+    usecase "UC8: Create order" as UC8
+    usecase "UC9: Add products to order" as UC9
+    usecase "UC10: View order history" as UC10
+    usecase "UC11: Calculate order total" as UC11
+    usecase "UC12: Update or delete order" as UC12
+}
+
+' --- Relationships between actors and use cases ---
+C --> UC1
+C --> UC2
+C --> UC7
+C --> UC8
+C --> UC9
+C --> UC10
+C --> UC11
+
+E --> UC3
+E --> UC4
+E --> UC5
+E --> UC6
+E --> UC7
+E --> UC8
+E --> UC9
+E --> UC10
+E --> UC11
+E --> UC12
+
+' --- Relationships between use cases ---
+UC8 --> UC9 : «include»
+UC9 --> UC11 : «include»
+UC8 --> UC10 : «extend»
+UC12 --> UC8 : «extend»
+
+@enduml
+
