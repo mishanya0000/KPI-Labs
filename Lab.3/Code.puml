@@ -1,0 +1,43 @@
+@startuml
+title Sequence Diagram – Place an Order
+
+actor Customer
+participant AuthService
+participant ProductCatalog
+participant OrderService
+participant PaymentService
+database Database
+
+Customer -> AuthService : login(credentials)
+AuthService -> Database : validateUser(credentials)
+Database --> AuthService : userValid
+AuthService --> Customer : loginSuccess
+
+Customer -> ProductCatalog : getProducts()
+ProductCatalog --> Customer : productList
+
+Customer -> OrderService : addProductToOrder(product)
+OrderService -> ProductCatalog : checkAvailability(product)
+ProductCatalog --> OrderService : available
+OrderService --> Customer : productAdded
+
+Customer -> OrderService : createOrder(orderDetails)
+OrderService -> OrderService : calculateTotal()
+OrderService --> Customer : orderSummary
+
+Customer -> PaymentService : processPayment(orderID, paymentInfo)
+PaymentService -> Database : recordPayment()
+Database --> PaymentService : paymentConfirmed
+PaymentService --> OrderService : paymentSuccess
+
+OrderService -> Database : saveOrder(orderData)
+Database --> OrderService : orderSaved
+
+OrderService --> Customer : confirmOrder()
+
+note right of Customer
+Customer receives confirmation
+with order number and total cost
+end note
+
+@enduml
